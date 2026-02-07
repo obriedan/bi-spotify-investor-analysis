@@ -56,6 +56,6 @@
 ## AI Tools Used
 | Tool | Purpose | Exercise |
 |------|---------|----------|
-| Claude Code (Opus 4) | Project planning, orchestration, HTML generation, overall coordination | All |
+| Claude Code (Claude Opus 4) | Project planning, orchestration, HTML generation, overall coordination | All |
 | Claude (Sonnet) | Web research, content drafting, data gathering | All |
 | *(add NotebookLM, ChatGPT, etc. if used)* | | |
