@@ -80,7 +80,6 @@
 
         .step-container {
             margin-bottom: 24px;
-            page-break-inside: avoid;
         }
 
         .prompt-box {
@@ -187,10 +186,12 @@
                 font-size: 12pt;
                 margin-top: 18px;
                 margin-bottom: 10px;
+                page-break-after: avoid;
             }
 
             h3 {
                 font-size: 10.5pt;
+                page-break-after: avoid;
             }
 
             .prompt-box {
@@ -216,6 +217,10 @@
 
             .step-container {
                 margin-bottom: 18px;
+            }
+
+            .prompt-box, .output-box {
+                page-break-inside: avoid;
             }
 
             .reflection-section {
