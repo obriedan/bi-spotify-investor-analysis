@@ -1,0 +1,5 @@
+The full process for completing this assignment is outlined in detail along with all project files on github
+
+https://github.com/obriedan/bi-spotify-investor-analysis
+
+README.md outlines all phases of the assignment.
