@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPOT Q1 2026 Board Presentation - Investor Perspective</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @page {
+            size: landscape;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #191414;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            padding: 60px 80px;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #191414 0%, #0a0a0a 100%);
+            page-break-after: always;
+            position: relative;
+        }
+
+        .slide:last-child {
+            page-break-after: auto;
+        }
+
+        .slide-header {
+            border-left: 6px solid #1DB954;
+            padding-left: 30px;
+            margin-bottom: 50px;
+        }
+
+        .slide-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1DB954;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .slide-subtitle {
+            font-size: 22px;
+            font-weight: 300;
+            color: #B3B3B3;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Slide 1 Styles */
+        .headline {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 50px;
+            color: #FFFFFF;
+            text-align: center;
+        }
+
+        .kpi-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .kpi-box {
+            background: linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%);
+            border: 2px solid #1DB954;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .kpi-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(29, 185, 84, 0.3);
+        }
+
+        .kpi-label {
+            font-size: 18px;
+            font-weight: 400;
+            color: #B3B3B3;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .kpi-value {
+            font-size: 56px;
+            font-weight: 900;
+            color: #1DB954;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+
+        .kpi-detail {
+            font-size: 20px;
+            font-weight: 400;
+            color: #FFFFFF;
+        }
+
+        .bottom-bar {
+            background: #1DB954;
+            color: #191414;
+            padding: 25px 40px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        /* Slide 2 Styles */
+        .issues-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .issue-box {
+            background: #1e1e1e;
+            border-radius: 20px;
+            padding: 35px;
+            border-left: 6px solid #1DB954;
+        }
+
+        .issue-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1DB954;
+            margin-bottom: 20px;
+        }
+
+        .issue-content {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #E0E0E0;
+        }
+
+        .issue-content div {
+            margin-bottom: 12px;
+        }
+
+        .issue-content strong {
+            color: #1DB954;
+        }
+
+        .chart-container {
+            background: #1e1e1e;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 20px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 200px;
+        }
+
+        /* Slide 3 Styles */
+        .action-table-wrapper {
+            background: #1e1e1e;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #1DB954;
+            color: #191414;
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+            font-size: 17px;
+            color: #E0E0E0;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover {
+            background: #252525;
+        }
+
+        .priority-badge {
+            background: #1DB954;
+            color: #191414;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .insight-box {
+            background: linear-gradient(135deg, #1DB954 0%, #17a34a 100%);
+            color: #191414;
+            padding: 25px 40px;
+            border-radius: 15px;
+            font-size: 19px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        /* Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 30px;
+            left: 80px;
+            right: 80px;
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: #191414;
+            }
+
+            .slide {
+                page-break-after: always;
+                break-after: page;
+            }
+
+            .slide:last-child {
+                page-break-after: auto;
+            }
+        }
+
+        /* Responsive adjustments for screen view */
+        @media screen {
+            .slide {
+                min-height: 100vh;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SLIDE 1: Current Quarter Position -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title">SPOT: Q3 2025 — Profitability Inflection Confirmed</div>
+            <div class="slide-subtitle">Current Quarter Position | Investor Perspective</div>
+        </div>
+
+        <div class="slide-content">
+            <div class="headline">Record profitability amid market scepticism</div>
+
+            <div class="kpi-container">
+                <div class="kpi-box">
+                    <div class="kpi-label">Revenue</div>
+                    <div class="kpi-value">€4.3B</div>
+                    <div class="kpi-detail">+13% YoY</div>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-label">Operating Income</div>
+                    <div class="kpi-value">€582M</div>
+                    <div class="kpi-detail">Beat guidance by €97M</div>
+                </div>
+
+                <div class="kpi-box">
+                    <div class="kpi-label">Free Cash Flow</div>
+                    <div class="kpi-value">€806M</div>
+                    <div class="kpi-detail">Record, LTM €2.9B</div>
+                </div>
+            </div>
+
+            <div class="bottom-bar">
+                Stock at ~$440, down 44% from peak despite strongest operating quarter in history
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            Sources: Spotify Q3 2025 Earnings (Nov 4, 2025), Spotify Newsroom (Jan-Feb 2026), Yahoo Finance, Digital Music News, TechCrunch
+        </div>
+    </div>
+
+    <!-- SLIDE 2: Two Critical Issues -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title">Immediate Attention: Q1 2026 Investment Thesis at Inflection</div>
+            <div class="slide-subtitle">Two Critical Issues for Investor Decision</div>
+        </div>
+
+        <div class="slide-content">
+            <div class="issues-container">
+                <div class="issue-box">
+                    <div class="issue-title">Issue A: Pricing Power Test</div>
+                    <div class="issue-content">
+                        <div><strong>Jan 2026:</strong> $12.99/mo (+$1), now $2 above Apple Music</div>
+                        <div><strong>Risk:</strong> churn could offset $500M revenue gain</div>
+                        <div><strong>Watch:</strong> Q4 sub adds vs 289M target (Feb 10)</div>
+                    </div>
+                </div>
+
+                <div class="issue-box">
+                    <div class="issue-title">Issue B: Valuation Opportunity or Trap?</div>
+                    <div class="issue-content">
+                        <div><strong>Stock:</strong> $440 (44% off peak) at ~29x forward earnings</div>
+                        <div><strong>Analysts split:</strong> Citi Buy $650 vs Goldman downgrade</div>
+                        <div><strong>Key:</strong> operating momentum vs market sentiment</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-wrapper">
+                    <canvas id="divergenceChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            Sources: Spotify Q3 2025 Earnings (Nov 4, 2025), Spotify Newsroom (Jan-Feb 2026), Yahoo Finance, Digital Music News, TechCrunch
+        </div>
+    </div>
+
+    <!-- SLIDE 3: Recommended Actions -->
+    <div class="slide">
+        <div class="slide-header">
+            <div class="slide-title">Investment Actions: Next 90-180 Days</div>
+            <div class="slide-subtitle">Recommended Actions for Q1-Q2 2026</div>
+        </div>
+
+        <div class="slide-content">
+            <div class="action-table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;">Priority</th>
+                            <th style="width: 30%;">Action</th>
+                            <th style="width: 20%;">Trigger</th>
+                            <th style="width: 15%;">Timeline</th>
+                            <th style="width: 25%;">Expected Outcome</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="priority-badge">1</span></td>
+                            <td>Hold position; monitor Q4 earnings</td>
+                            <td>Feb 10, 2026</td>
+                            <td>Immediate</td>
+                            <td>Validate profitability thesis</td>
+                        </tr>
+                        <tr>
+                            <td><span class="priority-badge">2</span></td>
+                            <td>If subs > 289M & margin > 32.9%: increase 10%</td>
+                            <td>Q4 beat</td>
+                            <td>Q1 2026</td>
+                            <td>Target $650 (Citi PT)</td>
+                        </tr>
+                        <tr>
+                            <td><span class="priority-badge">3</span></td>
+                            <td>If subs miss by >3M: reduce 20%</td>
+                            <td>Q4 miss</td>
+                            <td>Q1 2026</td>
+                            <td>Protect downside</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="insight-box">
+                Content diversification (podcasts, audiobooks, AI features) expanding TAM — monitor non-music revenue share in FY2025 results
+            </div>
+        </div>
+
+        <div class="slide-footer">
+            Sources: Spotify Q3 2025 Earnings (Nov 4, 2025), Spotify Newsroom (Jan-Feb 2026), Yahoo Finance, Digital Music News, TechCrunch
+        </div>
+    </div>
+
+    <script>
+        // Chart showing divergence between stock price and operating income
+        const ctx = document.getElementById('divergenceChart').getContext('2d');
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025E'],
+                datasets: [
+                    {
+                        label: 'Stock Price (Indexed)',
+                        data: [100, 95, 70, 56],
+                        borderColor: '#FF4444',
+                        backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                        borderWidth: 4,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    },
+                    {
+                        label: 'Operating Income (Indexed)',
+                        data: [100, 130, 165, 180],
+                        borderColor: '#1DB954',
+                        backgroundColor: 'rgba(29, 185, 84, 0.1)',
+                        borderWidth: 4,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 14,
+                                family: 'Poppins',
+                                weight: '600'
+                            },
+                            padding: 15
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Divergence: Stock Price vs Operating Performance (Q1 2025 = 100)',
+                        color: '#1DB954',
+                        font: {
+                            size: 18,
+                            family: 'Poppins',
+                            weight: '700'
+                        },
+                        padding: {
+                            bottom: 20
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 40,
+                        max: 200,
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 12,
+                                family: 'Poppins'
+                            }
+                        },
+                        grid: {
+                            color: '#333333'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 12,
+                                family: 'Poppins'
+                            }
+                        },
+                        grid: {
+                            color: '#333333'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

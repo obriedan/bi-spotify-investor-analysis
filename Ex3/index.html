@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify (SPOT) - Investor Dashboard | Q3 2025</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js"></script>
+
+    <style>
+        /* CSS Variables for Spotify Brand Colors */
+        :root {
+            --spotify-green: #1DB954;
+            --spotify-dark: #191414;
+            --spotify-card: #282828;
+            --spotify-white: #FFFFFF;
+            --spotify-grey: #B3B3B3;
+            --accent-red: #E74C3C;
+            --accent-green: #1DB954;
+        }
+
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--spotify-dark);
+            color: var(--spotify-white);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--spotify-card) 0%, #1a1a1a 100%);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            margin-bottom: 30px;
+            border-left: 6px solid var(--spotify-green);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--spotify-white);
+        }
+
+        .header .ticker {
+            color: var(--spotify-green);
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            color: var(--spotify-grey);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .header .meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-size: 0.95em;
+            color: var(--spotify-grey);
+            margin-top: 20px;
+        }
+
+        .header .meta-item {
+            background: rgba(29, 185, 84, 0.1);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(29, 185, 84, 0.2);
+        }
+
+        .header .meta-item strong {
+            color: var(--spotify-white);
+        }
+
+        /* KPI Cards Section */
+        .kpi-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--spotify-white);
+            padding-left: 10px;
+            border-left: 4px solid var(--spotify-green);
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .kpi-card {
+            background: var(--spotify-card);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(29, 185, 84, 0.2);
+        }
+
+        .kpi-label {
+            font-size: 0.85em;
+            color: var(--spotify-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .kpi-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            color: var(--spotify-white);
+            margin-bottom: 15px;
+        }
+
+        .kpi-changes {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .kpi-change {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85em;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .kpi-change.positive {
+            background: rgba(29, 185, 84, 0.15);
+            color: var(--accent-green);
+        }
+
+        .kpi-change.negative {
+            background: rgba(231, 76, 60, 0.15);
+            color: var(--accent-red);
+        }
+
+        .arrow {
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        /* Charts Section */
+        .charts-section {
+            margin-bottom: 40px;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+        }
+
+        .chart-container {
+            background: var(--spotify-card);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chart-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--spotify-white);
+        }
+
+        .chart-canvas {
+            position: relative;
+            height: 300px;
+        }
+
+        /* Issues Panel */
+        .issues-section {
+            margin-bottom: 40px;
+        }
+
+        .issues-panel {
+            background: var(--spotify-card);
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .issues-panel h2 {
+            font-size: 1.5em;
+            margin-bottom: 25px;
+            color: var(--spotify-white);
+            font-weight: 600;
+        }
+
+        .issue-item {
+            margin-bottom: 20px;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        .issue-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--spotify-green);
+            font-size: 1.5em;
+            line-height: 1;
+        }
+
+        .issue-item strong {
+            color: var(--spotify-green);
+            font-weight: 600;
+        }
+
+        .issue-date {
+            color: var(--spotify-grey);
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--spotify-card);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            color: var(--spotify-grey);
+            font-size: 0.9em;
+            line-height: 1.8;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-section {
+            margin-bottom: 12px;
+        }
+
+        .footer-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer strong {
+            color: var(--spotify-white);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .kpi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header .meta {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 25px;
+            }
+
+            .kpi-value {
+                font-size: 1.8em;
+            }
+
+            .chart-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <h1>Spotify Technology S.A.</h1>
+        <div class="ticker">NYSE: SPOT</div>
+        <div class="subtitle">GARP Equity Fund Quarterly Review</div>
+        <div class="meta">
+            <div class="meta-item"><strong>Lens:</strong> Investor/Shareholder Analysis</div>
+            <div class="meta-item"><strong>Period:</strong> Q3 2025 (Most Recent Reported)</div>
+            <div class="meta-item"><strong>Q4 2025 Earnings:</strong> Due February 10, 2026</div>
+            <div class="meta-item"><strong>Student ID:</strong> xxxxxx37</div>
+        </div>
+    </header>
+
+    <!-- KPI Cards Section -->
+    <section class="kpi-section">
+        <h2 class="section-title">Key Performance Indicators - Q3 2025</h2>
+        <div class="kpi-grid">
+            <!-- KPI Card 1: Revenue -->
+            <div class="kpi-card">
+                <div class="kpi-label">Total Revenue</div>
+                <div class="kpi-value">€4.3B</div>
+                <div class="kpi-changes">
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+2.4% QoQ</span>
+                    </div>
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+13.2% YoY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Card 2: Premium Subscribers -->
+            <div class="kpi-card">
+                <div class="kpi-label">Premium Subscribers</div>
+                <div class="kpi-value">281M</div>
+                <div class="kpi-changes">
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+1.8% QoQ</span>
+                    </div>
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+12.0% YoY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Card 3: Monthly Active Users -->
+            <div class="kpi-card">
+                <div class="kpi-label">Monthly Active Users</div>
+                <div class="kpi-value">713M</div>
+                <div class="kpi-changes">
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+2.4% QoQ</span>
+                    </div>
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+10.9% YoY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Card 4: Gross Margin -->
+            <div class="kpi-card">
+                <div class="kpi-label">Gross Margin</div>
+                <div class="kpi-value">31.6%</div>
+                <div class="kpi-changes">
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+10 bps QoQ</span>
+                    </div>
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+60 bps YoY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Card 5: Operating Income -->
+            <div class="kpi-card">
+                <div class="kpi-label">Operating Income</div>
+                <div class="kpi-value">€582M</div>
+                <div class="kpi-changes">
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+43.3% QoQ</span>
+                    </div>
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+45.5% YoY</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Card 6: Free Cash Flow -->
+            <div class="kpi-card">
+                <div class="kpi-label">Free Cash Flow</div>
+                <div class="kpi-value">€806M</div>
+                <div class="kpi-changes">
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>Record High</span>
+                    </div>
+                    <div class="kpi-change positive">
+                        <span class="arrow">▲</span>
+                        <span>+13% YoY</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Charts Section -->
+    <section class="charts-section">
+        <h2 class="section-title">8-Quarter Performance Trends</h2>
+        <div class="charts-grid">
+            <!-- Chart 1: Revenue & Operating Income -->
+            <div class="chart-container">
+                <div class="chart-title">Revenue & Operating Income Trend</div>
+                <div class="chart-canvas">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 2: Subscribers & MAU Growth -->
+            <div class="chart-container">
+                <div class="chart-title">Subscriber & MAU Growth</div>
+                <div class="chart-canvas">
+                    <canvas id="subscriberChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 3: Gross Margin Trajectory -->
+            <div class="chart-container">
+                <div class="chart-title">Gross Margin % Trajectory</div>
+                <div class="chart-canvas">
+                    <canvas id="marginChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Current Issues Panel -->
+    <section class="issues-section">
+        <div class="issues-panel">
+            <h2>Key Issues for Investor Attention (Last 90 Days)</h2>
+
+            <div class="issue-item">
+                <strong>Price Increase Risk/Reward</strong> <span class="issue-date">(January 15, 2026)</span>:
+                Third price hike takes Individual to $12.99/month, now $2 above Apple Music. JPMorgan estimates +$500M revenue,
+                but stock down 44% from peak amid churn concerns.
+            </div>
+
+            <div class="issue-item">
+                <strong>Stock Valuation Disconnect</strong> <span class="issue-date">(February 4, 2026)</span>:
+                SPOT at ~$440, down 44% from June 2025 peak of $785 despite strong Q3 results. Citi upgraded to Buy with $650
+                target (Jan 30). UBS maintains $800 target.
+            </div>
+
+            <div class="issue-item">
+                <strong>AI Product Innovation Acceleration</strong> <span class="issue-date">(January 22, 2026)</span>:
+                Prompted Playlists expanded to US/Canada; "About the Song" launched Feb 6. Differentiators vs Apple Music/YouTube Music.
+            </div>
+
+            <div class="issue-item">
+                <strong>Content Diversification Strategy</strong> <span class="issue-date">(January-February 2026)</span>:
+                Physical book sales via Bookshop.org, Netflix podcast partnership, video podcast surge to 500K shows.
+                Expanding TAM beyond pure audio.
+            </div>
+
+            <div class="issue-item">
+                <strong>Q4 2025 Earnings Catalyst</strong> <span class="issue-date">(February 10, 2026)</span>:
+                Consensus expects €4.5B revenue, 289M subs, 32.9% gross margin, €620M operating income. Key test of
+                profitability durability thesis.
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-section">
+            <strong>Sources:</strong> Spotify Q3 2025 Earnings Release (Nov 4, 2025), Spotify Newsroom, Yahoo Finance,
+            CNBC, TechCrunch, Digital Music News
+        </div>
+        <div class="footer-section">
+            <strong>AI Tools:</strong> Claude Code (Opus 4), Claude (Sonnet) for research and analysis
+        </div>
+        <div class="footer-section">
+            Dashboard created for NCI MBA Business Intelligence CA - February 2026
+        </div>
+    </footer>
+
+    <!-- JavaScript for Charts -->
+    <script>
+        // Chart.js default configuration for dark theme
+        Chart.defaults.color = '#B3B3B3';
+        Chart.defaults.borderColor = 'rgba(255, 255, 255, 0.1)';
+        Chart.defaults.font.family = 'Poppins';
+
+        // Quarter labels for all charts
+        const quarterLabels = ["Q4'23", "Q1'24", "Q2'24", "Q3'24", "Q4'24", "Q1'25", "Q2'25", "Q3'25"];
+
+        // Chart 1: Revenue & Operating Income Trend
+        const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+        const revenueChart = new Chart(revenueCtx, {
+            type: 'bar',
+            data: {
+                labels: quarterLabels,
+                datasets: [
+                    {
+                        label: 'Revenue (€B)',
+                        data: [3.7, 3.6, 3.8, 3.8, 4.2, 4.2, 4.2, 4.3],
+                        backgroundColor: [
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.6)',
+                            'rgba(29, 185, 84, 0.9)' // Highlight Q3'25
+                        ],
+                        borderColor: 'rgba(29, 185, 84, 1)',
+                        borderWidth: 2,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Operating Income (€M)',
+                        data: [55, 168, 266, 400, 477, 509, 406, 582],
+                        backgroundColor: [
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.3)',
+                            'rgba(255, 255, 255, 0.7)' // Highlight Q3'25
+                        ],
+                        borderColor: 'rgba(255, 255, 255, 0.8)',
+                        borderWidth: 2,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(40, 40, 40, 0.95)',
+                        titleColor: '#1DB954',
+                        bodyColor: '#FFFFFF',
+                        borderColor: '#1DB954',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Revenue (€B)',
+                            color: '#1DB954',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Operating Income (€M)',
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 2: Subscriber & MAU Growth
+        const subscriberCtx = document.getElementById('subscriberChart').getContext('2d');
+        const subscriberChart = new Chart(subscriberCtx, {
+            type: 'line',
+            data: {
+                labels: quarterLabels,
+                datasets: [
+                    {
+                        label: 'Premium Subscribers (M)',
+                        data: [236, 239, 246, 251, 263, 268, 276, 281],
+                        borderColor: '#1DB954',
+                        backgroundColor: 'rgba(29, 185, 84, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: '#1DB954',
+                        pointBorderColor: '#FFFFFF',
+                        pointBorderWidth: 2
+                    },
+                    {
+                        label: 'Monthly Active Users (M)',
+                        data: [602, 615, 626, 643, 675, 678, 696, 713],
+                        borderColor: '#FFFFFF',
+                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        pointBackgroundColor: '#FFFFFF',
+                        pointBorderColor: '#1DB954',
+                        pointBorderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(40, 40, 40, 0.95)',
+                        titleColor: '#1DB954',
+                        bodyColor: '#FFFFFF',
+                        borderColor: '#1DB954',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Users (Millions)',
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Chart 3: Gross Margin % Trajectory
+        const marginCtx = document.getElementById('marginChart').getContext('2d');
+        const marginChart = new Chart(marginCtx, {
+            type: 'line',
+            data: {
+                labels: quarterLabels,
+                datasets: [
+                    {
+                        label: 'Gross Margin %',
+                        data: [26.7, 27.6, 29.2, 31.0, 32.2, 31.6, 31.5, 31.6],
+                        borderColor: '#1DB954',
+                        backgroundColor: 'rgba(29, 185, 84, 0.2)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointBackgroundColor: '#1DB954',
+                        pointBorderColor: '#FFFFFF',
+                        pointBorderWidth: 2
+                    },
+                    {
+                        label: 'Profitability Threshold (30%)',
+                        data: Array(8).fill(30),
+                        borderColor: 'rgba(231, 76, 60, 0.6)',
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        borderDash: [8, 4],
+                        fill: false,
+                        pointRadius: 0,
+                        pointHoverRadius: 0
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '500'
+                            },
+                            padding: 15,
+                            usePointStyle: true
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(40, 40, 40, 0.95)',
+                        titleColor: '#1DB954',
+                        bodyColor: '#FFFFFF',
+                        borderColor: '#1DB954',
+                        borderWidth: 1,
+                        padding: 12,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                if (context.datasetIndex === 0) {
+                                    return 'Gross Margin: ' + context.parsed.y.toFixed(1) + '%';
+                                }
+                                return 'Threshold: 30%';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            }
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Gross Margin (%)',
+                            color: '#FFFFFF',
+                            font: {
+                                size: 12,
+                                weight: '600'
+                            }
+                        },
+                        min: 25,
+                        max: 34,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#B3B3B3',
+                            font: {
+                                size: 11
+                            },
+                            callback: function(value) {
+                                return value + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

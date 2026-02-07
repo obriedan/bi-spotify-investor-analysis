@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering Showcase: Multi-Step Orchestration</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.5;
+            color: #1a1a1a;
+            background: #ffffff;
+            padding: 40px 60px;
+            font-size: 10.5pt;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #1DB954;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: #1DB954;
+            font-size: 22pt;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 13pt;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+
+        .lens {
+            color: #777;
+            font-size: 10pt;
+            font-style: italic;
+        }
+
+        h2 {
+            color: #1DB954;
+            font-size: 14pt;
+            font-weight: 600;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            border-left: 4px solid #1DB954;
+            padding-left: 12px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 11.5pt;
+            font-weight: 600;
+            margin-top: 16px;
+            margin-bottom: 8px;
+        }
+
+        p {
+            margin-bottom: 10px;
+            text-align: justify;
+        }
+
+        .overview {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid #1DB954;
+        }
+
+        .step-container {
+            margin-bottom: 24px;
+            page-break-inside: avoid;
+        }
+
+        .prompt-box {
+            background: #2d2d2d;
+            color: #e0e0e0;
+            padding: 14px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 9pt;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            line-height: 1.4;
+            border: 1px solid #444;
+        }
+
+        .output-box {
+            background: #f0f7f4;
+            padding: 14px;
+            border-radius: 6px;
+            margin: 10px 0;
+            border: 1px solid #c8e6d7;
+        }
+
+        .output-box table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 9pt;
+        }
+
+        .output-box th {
+            background: #1DB954;
+            color: white;
+            padding: 8px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #17a047;
+        }
+
+        .output-box td {
+            padding: 6px 8px;
+            border: 1px solid #c8e6d7;
+            vertical-align: top;
+        }
+
+        .output-box tr:nth-child(even) {
+            background: #ffffff;
+        }
+
+        .annotation {
+            font-style: italic;
+            color: #555;
+            font-size: 9.5pt;
+            margin-top: 6px;
+            padding-left: 12px;
+            border-left: 2px solid #ddd;
+        }
+
+        .reflection-section {
+            background: #fff8e6;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 24px;
+            border: 2px solid #ffd966;
+            page-break-inside: avoid;
+        }
+
+        .reflection-section h2 {
+            color: #d97706;
+            border-left-color: #d97706;
+        }
+
+        .reflection-section p {
+            margin-bottom: 12px;
+        }
+
+        .reflection-section strong {
+            color: #92400e;
+        }
+
+        .footer {
+            margin-top: 30px;
+            padding-top: 16px;
+            border-top: 2px solid #e0e0e0;
+            font-size: 9pt;
+            color: #666;
+        }
+
+        .footer strong {
+            color: #333;
+        }
+
+        @media print {
+            body {
+                padding: 30px 40px;
+                font-size: 9.5pt;
+            }
+
+            h1 {
+                font-size: 20pt;
+            }
+
+            h2 {
+                font-size: 12pt;
+                margin-top: 18px;
+                margin-bottom: 10px;
+            }
+
+            h3 {
+                font-size: 10.5pt;
+            }
+
+            .prompt-box {
+                font-size: 8pt;
+                padding: 10px;
+            }
+
+            .output-box {
+                padding: 10px;
+            }
+
+            .output-box table {
+                font-size: 8pt;
+            }
+
+            .output-box th, .output-box td {
+                padding: 4px 6px;
+            }
+
+            .annotation {
+                font-size: 8.5pt;
+            }
+
+            .step-container {
+                margin-bottom: 18px;
+            }
+
+            .reflection-section {
+                padding: 14px;
+            }
+
+            .footer {
+                font-size: 8pt;
+            }
+
+            @page {
+                margin: 1.5cm;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Prompt Engineering Showcase: Multi-Step Orchestration</h1>
+        <div class="subtitle">Spotify (SPOT) Investor Analysis — 3-Step Prompt Chain</div>
+        <div class="lens">Student Lens: Investor/Shareholder</div>
+    </div>
+
+    <div class="overview">
+        <p>This showcase demonstrates a 3-step prompt chain designed to transform raw financial data into an actionable investment recommendation for Spotify (SPOT). Each prompt builds on the previous output, progressively refining raw data into structured analysis and then into a decision framework. The chain was executed using Claude (Anthropic) with the Investor/Shareholder lens applied throughout.</p>
+    </div>
+
+    <h2>Step 1: Extract & Structure</h2>
+    <div class="step-container">
+        <h3>Prompt 1:</h3>
+        <div class="prompt-box">You are a financial data analyst. I'm providing you with Spotify Technology's Q3 2025 earnings highlights. Extract and structure the following into a comparison table:
+1. The 5 most investor-relevant metrics (Revenue, Premium Subscribers, MAUs, Gross Margin, Operating Income)
+2. Show Q3 2025 actual, Q2 2025 (QoQ), and Q3 2024 (YoY) with percentage changes
+3. Highlight which metrics beat or missed Q3 2025 guidance
+4. Flag any metric showing deceleration vs prior quarter growth rate
+
+Raw data: [Spotify Q3 2025 reported Revenue €4.3B, Premium Subs 281M, MAUs 713M, Gross Margin 31.6%, Operating Income €582M (guidance was €485M). Q2 2025: Revenue €4.2B, Subs 276M, MAUs 696M, GM 31.5%, OI €406M. Q3 2024: Revenue €3.8B, Subs 251M, MAUs 643M, GM 31.0%, OI ~€400M.]</div>
+
+        <h3>Output 1:</h3>
+        <div class="output-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Q3 2025</th>
+                        <th>Q2 2025 (QoQ)</th>
+                        <th>Q3 2024 (YoY)</th>
+                        <th>vs Guidance</th>
+                        <th>Trend Flag</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Revenue</strong></td>
+                        <td>€4.3B</td>
+                        <td>€4.2B (+2.4%)</td>
+                        <td>€3.8B (+13.2%)</td>
+                        <td>Beat</td>
+                        <td>Revenue growth decelerating (was +16% YoY in Q4'24)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Premium Subs</strong></td>
+                        <td>281M</td>
+                        <td>276M (+1.8%)</td>
+                        <td>251M (+12.0%)</td>
+                        <td>Beat</td>
+                        <td>Stable growth</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MAUs</strong></td>
+                        <td>713M</td>
+                        <td>696M (+2.4%)</td>
+                        <td>643M (+10.9%)</td>
+                        <td>Beat</td>
+                        <td>Stable growth</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Gross Margin</strong></td>
+                        <td>31.6%</td>
+                        <td>31.5% (+10bps)</td>
+                        <td>31.0% (+60bps)</td>
+                        <td>Beat</td>
+                        <td>QoQ expansion slowing</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Operating Income</strong></td>
+                        <td>€582M</td>
+                        <td>€406M (+43.3%)</td>
+                        <td>~€400M (+45.5%)</td>
+                        <td>Beat by €97M</td>
+                        <td>Strong beat</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="annotation">
+            Annotation: Step 1 transforms unstructured earnings data into a structured comparison with trend flags. The trend flag column adds analytical value a simple table wouldn't capture.
+        </div>
+    </div>
+
+    <h2>Step 2: Identify Key Risk</h2>
+    <div class="step-container">
+        <h3>Prompt 2:</h3>
+        <div class="prompt-box">You are an institutional investor analyst at a GARP (Growth-at-Reasonable-Price) equity fund. Based on the structured Q3 2025 Spotify data below, plus these recent developments:
+- January 15, 2026: Spotify raised US prices to $12.99/month ($2 above Apple Music)
+- February 4, 2026: SPOT stock at ~$440, down 44% from June 2025 peak of $785
+- January 30, 2026: Citigroup upgraded to Buy ($650 target) while Goldman Sachs downgraded in December
+
+Identify the SINGLE biggest risk that could invalidate the GARP thesis for SPOT in the next 12 months. Explain:
+1. What specifically could go wrong
+2. What data point in Q4 2025 earnings (due Feb 10) would confirm or deny this risk
+3. The financial magnitude if the risk materializes
+
+[Paste Output 1 table here]</div>
+
+        <h3>Output 2:</h3>
+        <div class="output-box">
+            <p><strong>Primary Risk: Pricing-Induced Subscriber Growth Stall</strong></p>
+
+            <p>The single biggest risk to the GARP thesis is that the January 2026 price increase triggers a material deceleration in subscriber net additions, breaking the growth half of the 'growth-at-reasonable-price' equation.</p>
+
+            <p><strong>What could go wrong:</strong> Spotify is now the most expensive mainstream music streaming service at $12.99/month, $2 above Apple Music which includes lossless audio Spotify still hasn't delivered (promised since 2021). If price-sensitive users defect to Apple Music or YouTube Music, net subscriber additions could fall below the 7-8M quarterly run rate, shifting the narrative from 'profitable growth' to 'margin-buying through price hikes at the expense of growth.'</p>
+
+            <p><strong>Q4 2025 earnings test (Feb 10, 2026):</strong> The critical data point is Premium subscriber net additions. Management guided 289M (implying ~8M net adds QoQ). If actual net adds are below 6M, it would be the weakest quarter since Q1 2024 and would signal the pricing strategy is cannibalising growth. Also watch: churn rate commentary and geographic mix of new subscribers.</p>
+
+            <p><strong>Financial magnitude:</strong> A 2% subscriber loss (5.6M users at ~€4.50 ARPU/month) would reduce annual revenue by ~€300M, offsetting roughly 60% of the estimated $500M revenue gain from the price increase. More critically, it would compress the stock's growth premium, potentially pushing SPOT below $400 — a 50%+ drawdown from peak.</p>
+        </div>
+
+        <div class="annotation">
+            Annotation: Step 2 takes the structured data from Step 1 and applies the investor persona and recent market context to identify a specific, testable risk. The output is more focused than what a single prompt asking "analyse Spotify" would produce because it builds on pre-structured data.
+        </div>
+    </div>
+
+    <h2>Step 3: Investment Recommendation</h2>
+    <div class="step-container">
+        <h3>Prompt 3:</h3>
+        <div class="prompt-box">You are writing a one-paragraph investment recommendation for the Q1 2026 portfolio review of a GARP equity fund that holds Spotify (SPOT). Based on:
+- The structured financial data showing Q3 2025 operational beat
+- The primary risk identified: pricing-induced subscriber growth stall
+- The Q4 2025 earnings catalyst on February 10, 2026
+
+Write a decision framework with three scenarios (bull, base, bear) and a specific recommended action for each. Keep it under 150 words. Include specific price targets and position sizing recommendations.</div>
+
+        <h3>Output 3:</h3>
+        <div class="output-box">
+            <p><strong>SPOT Q1 2026 Decision Framework</strong></p>
+
+            <p><strong>BULL (40% probability):</strong> Q4 subs exceed 290M, gross margin above 33%, operating income beats €620M guidance. Action: Increase position by 15%, target $650 (Citi PT) over 12 months. Thesis: profitability is durable and the market will re-rate.</p>
+
+            <p><strong>BASE (40% probability):</strong> Q4 subs at 287-290M, margin at 32.5-33%, operating income meets guidance. Action: Hold current position, set trailing stop at $380. Thesis: growth intact but pricing headwinds limit near-term upside.</p>
+
+            <p><strong>BEAR (20% probability):</strong> Q4 subs below 286M, any churn commentary, margin miss. Action: Reduce position by 25%, reallocate to Apple (AAPL) services exposure. Thesis: pricing strategy is eroding competitive position.</p>
+
+            <p><strong>Current recommendation: HOLD pending Feb 10 catalyst.</strong> The operational fundamentals remain strong but the stock needs Q4 confirmation to rebuild investor confidence.</p>
+        </div>
+
+        <div class="annotation">
+            Annotation: Step 3 converts the risk analysis into a decision-ready framework. A single prompt asking for a "Spotify investment recommendation" would produce generic advice; the chain produces scenario-specific actions tied to verifiable data points.
+        </div>
+    </div>
+
+    <div class="reflection-section">
+        <h2>Orchestration Reflection</h2>
+
+        <p><strong>What the chain achieved:</strong> Each step progressively narrowed focus — from broad data extraction (Step 1) to specific risk identification (Step 2) to actionable decision framework (Step 3). The final output is materially more useful than what a single prompt would produce because it's anchored in structured data and a specific risk thesis rather than generic analysis.</p>
+
+        <p><strong>What worked well:</strong> Forcing the AI to identify a SINGLE biggest risk in Step 2 (rather than listing multiple concerns) created analytical focus. The persona instruction ('GARP fund analyst') in Steps 2 and 3 kept the output commercially relevant rather than academically abstract.</p>
+
+        <p><strong>Limitations and what I'd change:</strong> The chain assumes the structured data from Step 1 is accurate — in practice, I'd add a verification step where I cross-check the AI's extracted figures against the original earnings release. The probability estimates in Step 3 (40/40/20) are subjective and not derived from quantitative modelling. A more sophisticated chain might include a Step 2.5 that uses historical precedent (e.g., subscriber response to previous price increases) to calibrate these probabilities.</p>
+
+        <p><strong>Key insight:</strong> The value of multi-step orchestration isn't just better output — it's auditability. Each step's input and output is visible, making it possible to identify exactly where the analysis might go wrong.</p>
+    </div>
+
+    <div class="footer">
+        <p><strong>AI Tool Used:</strong> Claude (Anthropic) — Claude Code (Opus 4) for orchestration design; Claude (Sonnet) for prompt execution</p>
+        <p><strong>Data Sources:</strong> Spotify Q3 2025 Earnings Release (Nov 4, 2025), Spotify Newsroom (Jan-Feb 2026), Yahoo Finance, Digital Music News</p>
+    </div>
+</body>
+</html>
