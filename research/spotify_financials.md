@@ -51,7 +51,7 @@
 
 | Quarter | Revenue (€B) | Premium Subs (M) | MAUs (M) | Gross Margin % | Operating Income (€M) |
 |---------|-------------|-------------------|----------|----------------|----------------------|
-| Q4 2023 | 3.7 | 236 | 602 | 26.7% | 55 |
+| Q4 2023 | 3.7 | 236 | 602 | 26.7% | (75) |
 | Q1 2024 | 3.6 | 239 | 615 | 27.6% | 168 |
 | Q2 2024 | 3.8 | 246 | 626 | 29.2% | 266 |
 | Q3 2024 | 3.8 | 251 | 643 | 31.0% | 400 |
@@ -60,7 +60,7 @@
 | Q2 2025 | 4.2 | 276 | 696 | 31.5% | 406 |
 | Q3 2025 | 4.3 | 281 | 713 | 31.6% | 582 |
 
-**Note**: Q4 2023 and Q1-Q2 2024 figures are estimates based on reported YoY growth rates. Verify against SEC filings for exact figures.
+**Sources**: Q4'23–Q2'24 from Spotify Shareholder Decks (Q4 2023 Final & Q2 2024 Final, p.4). Q3'24–Q3'25 from quarterly earnings releases. 20-F (FY2024) for annual figures.
 
 ## Stock Price Context (as of early Feb 2026)
 - Current: ~$440

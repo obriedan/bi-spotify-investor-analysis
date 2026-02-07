@@ -9,6 +9,9 @@
 ## SEC Filings & Financial Documents
 | Document | URL | Date | Data Extracted |
 |----------|-----|------|----------------|
+| Spotify 20-F Annual Report (FY2024) | SEC EDGAR (via NotebookLM extraction) | FY2024 | Revenue €15,673M (p.44), OI €1,365M (p.8/F-5), FCF €2,285M (p.49), Subs 263M (p.32), ARPU €4.69 (p.43), Risk factors (pp.5,13,18), Competition (p.36), Content obligations €4.4B (pp.13,49) |
+| Spotify Q4 2023 Shareholder Deck | Shareholder-Deck-Q4-2023-FINAL.pdf | Q4 2023 | Verified quarterly figures: Revenue, OI (€−75M), Subs, MAUs, GM (p.4) |
+| Spotify Q2 2024 Shareholder Deck | Spotify-Q2-2024-Shareholder-Deck-FINAL.pdf | Q2 2024 | Verified quarterly figures: Revenue, OI, Subs, MAUs, GM (p.4) |
 | Spotify Investor Relations | https://investors.spotify.com/home/default.aspx | Ongoing | Financial data hub |
 | Spotify Financials Page | https://investors.spotify.com/financials/default.aspx | Ongoing | SEC filings, quarterly reports |
 
@@ -51,11 +54,12 @@
 | Source | URL | Date Accessed | Data Extracted |
 |--------|-----|---------------|----------------|
 | Apple Music pricing comparison | https://www.macobserver.com/news/spotify-price-increase-vs-apple-music-price-compared/ | Feb 7, 2026 | Apple Music $10.99 vs Spotify $12.99, lossless audio |
-| *(more to be added during Ex2 peer comparison work)* | | | |
+| YouTube Music Premium pricing | General knowledge / web research | Feb 7, 2026 | $10.99/month, $13.99 with YouTube Premium |
+| Amazon Music Unlimited pricing | General knowledge / web research | Feb 7, 2026 | $10.99/month, lossless audio included |
 
 ## AI Tools Used
 | Tool | Purpose | Exercise |
 |------|---------|----------|
 | Claude Code (Claude Opus 4) | Project planning, orchestration, HTML generation, overall coordination | All |
 | Claude (Sonnet) | Web research, content drafting, data gathering | All |
-| *(add NotebookLM, ChatGPT, etc. if used)* | | |
+| Google NotebookLM | SEC filing (20-F) ingestion and key data extraction with page references | Ex1, Ex2 |
